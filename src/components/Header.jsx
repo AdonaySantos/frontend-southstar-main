@@ -9,10 +9,11 @@ export default function Header() {
         <div className="logo">
           <img src={logo} alt="" />
         </div>
+        <div className="title">
+          <h1>Página Inicial</h1>
+        </div>
         <div className="links-nav">
-          <Link to="/">Home</Link>
-          <Link to="/login">Login</Link>
-          <Link to="/cadastro">Cadastro</Link>
+          <Link to="/login">Entrar</Link>
         </div>
       </header>
     </>
