@@ -4,8 +4,9 @@ header {
   justify-content: space-between;
   align-items: center;
   padding: 10px;
-  height: 70px;
-  background: #0A0A0A;
+  height: 60px;
+  position: fixed;
+  margin: 0px 25px;
 }
 
 header .logo img {
@@ -13,18 +14,26 @@ header .logo img {
   background-color: black;
   padding: 10px;
   border-radius: 10px;
+  margin-left: 2;
 }
 
 .title h1{
-  font-size: 16px;
+  font-size: 14px;
+  font-family: "Montserrat", sans-serif;
+  font-weight: 500;
+  color: white;
 }
 
 .links-nav a {
   margin: 35px;
   text-decoration: none;
   background: white;
-  padding: 7.5px 12px 7.5px 12px;
-  border-radius: 10px;
+  padding: 8px 14px;
+  border-radius: 8px;
   color: black;
-  font-size: 12px;
+  font-size: 13px;
+  text-shadow: none;
+  font-family: "Montserrat", sans-serif;
+  font-weight: 500;
+  margin-right: 80px;
 }
