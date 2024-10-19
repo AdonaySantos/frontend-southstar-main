@@ -1,14 +1,39 @@
+// Home.js
 import "../static/Home.css";
+import Post from '../components/Posts.jsx'; // Certifique-se de que o caminho esteja correto
+import { useState, useEffect } from 'react';
 
 export default function Home() {
+  const [posts, setPosts] = useState([]);
+  const [loading, setLoading] = useState(true); // Para controlar o estado de carregamento
+  const [error, setError] = useState(null); // Para capturar possíveis erros
+
+  // Função para buscar os posts do backend
+  const fetchPosts = async () => {
+    try {
+      const response = await fetch('http://localhost:3000/posts'); // Substitua pela URL correta do seu backend
+      if (!response.ok) {
+        throw new Error('Erro ao buscar os posts');
+      }
+      const data = await response.json();
+      setPosts(data);
+    } catch (error) {
+      setError(error.message);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  useEffect(() => {
+    fetchPosts();
+  }, []);
+
   return (
     <>
-      <div className="container">
-        {/* Sidebar */}
-        <div className="sidebar">
-          <div className="logo1">
-            <i className="fab fa-xing"></i>
-          </div>
+      <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css"></link>
+      
+      {/* Sidebar */}
+      <div className="sidebar">
           <div className="menu">
             <div className="menu-item">
               <i className="fas fa-home"></i> <span>Home</span>
@@ -25,30 +50,25 @@ export default function Home() {
             <div className="menu-item">
               <i className="fas fa-user"></i> <span>Profile</span>
             </div>
+            <button className="post-button" id="menu-button">Post</button>
           </div>
-          <button className="post-button">Post</button>
         </div>
+      <div className="container">
+
 
         {/* Main Content */}
         <div className="main-content">
-          <div className="header">
-            <h2>For you</h2>
-            <h2>Following</h2>
-          </div>
-          <div className="post">
-            <div className="user-info">
-              <div className="user-avatar"></div>
-              <span>What is happening?!</span>
-            </div>
-            <div className="post-options">
-              <i className="fas fa-image"></i>
-              <i className="fas fa-gif"></i>
-              <i className="fas fa-poll"></i>
-              <i className="fas fa-smile"></i>
-              <i className="fas fa-calendar-alt"></i>
-            </div>
-            <button className="post-button">Post</button>
-          </div>
+          {loading && <p>Loading posts...</p>}
+          {error && <p>{error}</p>}
+          {posts.map((post, index) => (
+            <Post
+              key={index}
+              userAvatar={post.userAvatar}
+              userName={post.userName}
+              textContent={post.textContent}
+              imageContent={post.imageContent}
+            />
+          ))}
         </div>
 
         {/* Right Sidebar */}
