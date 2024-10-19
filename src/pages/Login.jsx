@@ -11,7 +11,7 @@ export default function Login() {
     event.preventDefault();
     try {
       const response = await axios.post(
-        "https://backend-southstar.onrender.com",
+        "https://backend-southstar-main.onrender.com/login",
         {
           name,
           password,

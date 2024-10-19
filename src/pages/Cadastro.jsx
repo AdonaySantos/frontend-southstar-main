@@ -11,70 +11,70 @@ export default function Cadastro() {
     e.preventDefault();
     try {
       const response = await axios.post(
-        "https://backend-southstar.onrender.com",
+        "https://backend-southstar-main.onrender.com/register", // Verifique se essa URL está correta
         {
           name,
           password,
         }
       );
-      setMessage(response.data.message);
+      setMessage(response.data.message); // Mensagem de sucesso
     } catch (error) {
-      setMessage("Erro ao cadastrar: " + error.response.data.message);
+      // Verifique se error.response existe antes de acessar data.message
+      setMessage("Erro ao cadastrar: " + (error.response?.data?.message || error.message));
     }
   };
 
   return (
     <>
-      <body>
-        <div className="main-cadastro">
-          <form onSubmit={handleSubmit}>
-            <div class="left-cadastro">
-              <div class="card-cadastro">
-                <h1>Cadastro</h1>
-                <div className="textfield">
-                  <label for="usuario">Usuário</label>
-                  <input
-                    type="text"
-                    name="usuario"
-                    placeholder="Usuário"
-                    value={name}
-                    onChange={(e) => setName(e.target.value)}
-                    required
-                  />
-                </div>
-                <div className="textfield">
-                  <label for="senha">Senha</label>
-                  <input
-                    type="password"
-                    name="senha"
-                    placeholder="Senha"
-                    value={password}
-                    onChange={(e) => setPassword(e.target.value)}
-                    required
-                  />
-                </div>
-                <div className="terms">
-                  <input type="checkbox" required />
-                  <label>
-                    Eu aceito os <a href="#">termos e condições</a>
-                  </label>
-                </div>
-                <button class="button-cadastro">Cadastrar</button>
-                {message && <p className="message">{message}</p>}
-                <div className="login-link">
-                  <p>
-                    Já tem uma conta? <a href="/login">Faça login</a>
-                  </p>
-                </div>
-                {message && <p>{message}</p>}
+      <div className="main-cadastro">
+        <form onSubmit={handleSubmit}>
+          <div className="left-cadastro">
+            <div className="card-cadastro">
+              <h1>Cadastro</h1>
+              <div className="textfield">
+                <label htmlFor="usuario">Usuário</label>
+                <input
+                  type="text"
+                  name="usuario"
+                  placeholder="Usuário"
+                  value={name}
+                  onChange={(e) => setName(e.target.value)}
+                  required
+                />
+              </div>
+              <div className="textfield">
+                <label htmlFor="senha">Senha</label>
+                <input
+                  type="password"
+                  name="senha"
+                  placeholder="Senha"
+                  value={password}
+                  onChange={(e) => setPassword(e.target.value)}
+                  required
+                />
+              </div>
+              <div className="terms">
+                <input type="checkbox" required />
+                <label>
+                  Eu aceito os <a href="#">termos e condições</a>
+                </label>
+              </div>
+              <button className="button-cadastro" type="submit">
+                Cadastrar
+              </button>
+              {message && <p className="message">{message}</p>}
+              <div className="login-link">
+                <p>
+                  Já tem uma conta? <a href="/login">Faça login</a>
+                </p>
               </div>
             </div>
-          </form>
-          <div className="right-cadastro">
-            <h1>Se cadastre :)<br></br> E entre para o nosso time!</h1>
           </div>
+        </form>
+        <div className="right-cadastro">
+          <h1>Se cadastre :)<br /> E entre para o nosso time!</h1>
         </div>
-      </body>
+      </div>
     </>
   );
 }
