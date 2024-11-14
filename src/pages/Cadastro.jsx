@@ -1,6 +1,8 @@
 import React, { useState } from "react";
 import "../static/Cadastro.css";
 import axios from "axios";
+import logo from '../assets/sroxo.ico'
+import Header from "../components/Header";
 
 export default function Cadastro() {
   const [name, setName] = useState("");
@@ -24,8 +26,16 @@ export default function Cadastro() {
     }
   };
 
+  const headerProps = {
+    logo: logo,
+    pag: "",
+    navegateheader: "/login",
+    nome: "Entrar",
+  };
+
   return (
     <>
+      <Header key={headerProps.navegateheader} item={headerProps} />
       <div className="main-cadastro">
         <form onSubmit={handleSubmit}>
           <div className="left-cadastro">

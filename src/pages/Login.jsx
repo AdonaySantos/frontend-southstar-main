@@ -1,6 +1,8 @@
 import axios from "axios";
 import { useState } from "react";
 import "../static/Login.css";
+import logo from '../assets/sroxo.ico'
+import Header from "../components/Header";
 
 export default function Login() {
   const [name, setName] = useState("");
@@ -25,9 +27,16 @@ export default function Login() {
       );
     }
   };
+  const headerProps = {
+    logo: logo,
+    pag: "",
+    navegateheader: "/cadastro",
+    nome: "Cadastro",
+  };
 
   return (
     <>
+      <Header key={headerProps.navegateheader} item={headerProps} />
       <body>
         <div className="main-login">
           <div className="left-login">

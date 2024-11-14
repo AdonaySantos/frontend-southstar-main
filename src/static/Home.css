@@ -1,10 +1,11 @@
 .container {
     display: flex;
+    justify-content: flex-end;
 }
 
 .sidebar {
     position: absolute;
-    margin: 350px 0px;
+    margin: 12rem 0px;
     width: 20%;
     height: 100vh;
     align-items: center;
@@ -50,44 +51,16 @@
 }
 
 .main-content {
-    width: 45%;
+    width: 40%;
     overflow-y: auto;
     background-color: #1c1c1c;
-    margin: 65px;
+    margin: 65px 55px;
     border: 1px solid #303030;
     border-radius: 30px;
 }
 
-.post {
-    background-color: #1c1c1c;
-    padding: 20px;
-    margin-bottom: 1em;
-    border-bottom: 1px solid #303030;
-}
-
-.user-info {
-    display: flex;
-    align-items: center;
-    color: white;
-}
-
-.user-avatar {
-    width: 40px;
-    height: 40px;
-    background-color: #34495e;
-    border-radius: 50%;
-    margin-right: 10px;
-}
-
-.post-options {
-    display: flex;
-    justify-content: space-between;
-    margin-top: 20px;
-    color: #bdc3c7;
-}
-
 .right-sidebar {
-    width: 21%;
+    width: 26%;
     height: 100vh;
     padding: 20px;
     box-sizing: border-box;

@@ -2,6 +2,8 @@
 import "../static/Home.css";
 import Post from '../components/Posts.jsx'; // Certifique-se de que o caminho esteja correto
 import { useState, useEffect } from 'react';
+import Header from "../components/Header.jsx";
+import logo from '../assets/favicon.ico'
 
 export default function Home() {
   const [posts, setPosts] = useState([]);
@@ -11,7 +13,7 @@ export default function Home() {
   // Função para buscar os posts do backend
   const fetchPosts = async () => {
     try {
-      const response = await fetch('http://localhost:3000/posts'); // Substitua pela URL correta do seu backend
+      const response = await fetch('https://backend-southstar-main.onrender.com/posts'); // Substitua pela URL correta do seu backend
       if (!response.ok) {
         throw new Error('Erro ao buscar os posts');
       }
@@ -28,8 +30,17 @@ export default function Home() {
     fetchPosts();
   }, []);
 
+  const headerProps = {
+    logo: logo,
+    pag: "Página Inicial",
+    navegateheader: "/login",
+    nome: "Entrar",
+  };
+
+
   return (
     <>
+      <Header key={headerProps.navegateheader} item={headerProps} />
       <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css"></link>
       
       {/* Sidebar */}
@@ -58,7 +69,6 @@ export default function Home() {
 
         {/* Main Content */}
         <div className="main-content">
-          {loading && <p>Loading posts...</p>}
           {error && <p>{error}</p>}
           {posts.map((post, index) => (
             <Post
