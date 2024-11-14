@@ -1,7 +1,6 @@
 import React from "react";
 import { createBrowserRouter, RouterProvider, Outlet } from 'react-router-dom';
 import { ToastContainer } from 'react-toastify';
-import Header from './components/Header';
 import Login from './pages/Login';
 import ForgotPassword from './pages/ForgotPassword'; // Corrigi o nome da importação para corresponder ao arquivo
 import Cadastro from './pages/Cadastro'
@@ -13,7 +12,6 @@ const router = createBrowserRouter([
   {
     element: (
       <>
-        <Header />
         <main>
           <Outlet />
         </main>
