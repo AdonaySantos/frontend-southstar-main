@@ -1,6 +1,5 @@
-// Home.js
 import "../static/Home.css";
-import Post from "../components/Posts.jsx"; // Certifique-se de que o caminho esteja correto
+import Post from "../components/Posts.jsx";
 import { useState, useEffect } from "react";
 import Header from "../components/Header.jsx";
 import logo from "../assets/favicon.ico";
@@ -10,15 +9,19 @@ import { handleLogout } from "../functions/handleLogout.jsx";
 
 export default function Home() {
   const [posts, setPosts] = useState([]);
-  const [loading, setLoading] = useState(true); // Para controlar o estado de carregamento
-  const [error, setError] = useState(null); // Para capturar possíveis erros
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+  const [token, setToken] = useState(localStorage.getItem("authToken")); // Gerencia o token no estado
   const navigate = useNavigate();
 
   useEffect(() => {
     fetchPosts(setPosts, setLoading);
   }, []);
 
-  const token = localStorage.getItem("authToken");
+  const logout = () => {
+    handleLogout(navigate); // Executa a função de logout
+    setToken(null); // Atualiza o estado do token
+  };
 
   const headerProps = {
     logo: logo,
@@ -46,7 +49,7 @@ export default function Home() {
           </div>
           {/* Botão de Logout */}
           {token && (
-            <div className="menu-item" onClick={handleLogout(navigate)}>
+            <div className="menu-item" onClick={logout}>
               <i className="fas fa-sign-out-alt"></i> <span>Logout</span>
             </div>
           )}
