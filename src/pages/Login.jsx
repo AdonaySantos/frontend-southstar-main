@@ -3,11 +3,13 @@ import { useState } from "react";
 import "../static/Login.css";
 import logo from '../assets/sroxo.ico'
 import Header from "../components/Header";
+import { useNavigate } from "react-router-dom";
 
 export default function Login() {
   const [name, setName] = useState("");
   const [password, setPassword] = useState("");
   const [message, setMessage] = useState("");
+  const navigate = useNavigate();
 
   const handleSubmit = async (event) => {
     event.preventDefault();
@@ -19,7 +21,13 @@ export default function Login() {
           password,
         }
       );
-      setMessage(response.data.message);
+      if (response.status === 200) {
+        localStorage.setItem("authToken", response.data.token);
+        setMessage(response.data.message);
+        navigate("/");
+      } else {
+        setMessage(response.data.message);
+      }
     } catch (error) {
       setMessage(
         "Erro ao fazer login: " +

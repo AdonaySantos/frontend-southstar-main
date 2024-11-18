@@ -1,72 +1,70 @@
 // Home.js
 import "../static/Home.css";
-import Post from '../components/Posts.jsx'; // Certifique-se de que o caminho esteja correto
-import { useState, useEffect } from 'react';
+import Post from "../components/Posts.jsx"; // Certifique-se de que o caminho esteja correto
+import { useState, useEffect } from "react";
 import Header from "../components/Header.jsx";
-import logo from '../assets/favicon.ico'
+import logo from "../assets/favicon.ico";
+import { fetchPosts } from "../functions/fetchPosts.jsx";
+import { useNavigate } from "react-router-dom";
+import { handleLogout } from "../functions/handleLogout.jsx";
 
 export default function Home() {
   const [posts, setPosts] = useState([]);
   const [loading, setLoading] = useState(true); // Para controlar o estado de carregamento
   const [error, setError] = useState(null); // Para capturar possíveis erros
-
-  // Função para buscar os posts do backend
-  const fetchPosts = async () => {
-    try {
-      const response = await fetch('https://backend-southstar-main.onrender.com/posts'); // Substitua pela URL correta do seu backend
-      if (!response.ok) {
-        throw new Error('Erro ao buscar os posts');
-      }
-      const data = await response.json();
-      setPosts(data);
-    } catch (error) {
-      setError(error.message);
-    } finally {
-      setLoading(false);
-    }
-  };
+  const navigate = useNavigate();
 
   useEffect(() => {
-    fetchPosts();
+    fetchPosts(setPosts, setLoading);
   }, []);
+
+  const token = localStorage.getItem("authToken");
 
   const headerProps = {
     logo: logo,
     pag: "Página Inicial",
-    navegateheader: "/login",
-    nome: "Entrar",
+    navegateheader: token ? "/perfil" : "/login",
+    nome: token ? "Perfil" : "Entrar",
   };
-
 
   return (
     <>
       <Header key={headerProps.navegateheader} item={headerProps} />
-      <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css"></link>
-      
+      <link
+        rel="stylesheet"
+        href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css"
+      ></link>
+
       {/* Sidebar */}
       <div className="sidebar">
-          <div className="menu">
-            <div className="menu-item">
-              <i className="fas fa-home"></i> <span>Home</span>
-            </div>
-            <div className="menu-item">
-              <i className="fas fa-search"></i> <span>Explore</span>
-            </div>
-            <div className="menu-item">
-              <i className="fas fa-bell"></i> <span>Notifications</span>
-            </div>
-            <div className="menu-item">
-              <i className="fas fa-envelope"></i> <span>Messages</span>
-            </div>
-            <div className="menu-item">
-              <i className="fas fa-user"></i> <span>Profile</span>
-            </div>
-            <button className="post-button" id="menu-button">Post</button>
+        <div className="menu">
+          <div className="menu-item">
+            <i className="fas fa-home"></i> <span>Home</span>
           </div>
+          <div className="menu-item">
+            <i className="fas fa-search"></i> <span>Explore</span>
+          </div>
+          {/* Botão de Logout */}
+          {token && (
+            <div className="menu-item" onClick={handleLogout(navigate)}>
+              <i className="fas fa-sign-out-alt"></i> <span>Logout</span>
+            </div>
+          )}
+          <div className="menu-item">
+            <i className="fas fa-envelope"></i> <span>Messages</span>
+          </div>
+          <div className="menu-item">
+            <i className="fas fa-user"></i> <span>Profile</span>
+          </div>
+          {/* Botão de Post */}
+          {token && (
+            <button className="post-button" id="menu-button">
+              Post
+            </button>
+          )}
         </div>
+      </div>
       <div className="container">
-
-
         {/* Main Content */}
         <div className="main-content">
           {error && <p>{error}</p>}
@@ -99,7 +97,7 @@ export default function Home() {
             <div className="follow-item">
               <div className="follow-info">
                 <div className="user-avatar"></div>
-                <span>Eddie Trunk</span>
+                <span>adonay</span>
               </div>
               <button className="follow-button">Follow</button>
             </div>

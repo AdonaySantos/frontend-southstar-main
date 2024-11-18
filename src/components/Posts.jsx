@@ -24,7 +24,7 @@ export default function Post({
           <p>{textContent}</p>
           <div className="post-images">
         {imageContent && (
-          <img src={imageContent} alt="Post content" className="post-image" />
+          <img src={"https://backend-southstar-main.onrender.com/posts/" + imageContent} alt="Post content" className="post-image" />
         )}
       </div>
         </div>
