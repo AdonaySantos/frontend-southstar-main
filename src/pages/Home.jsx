@@ -70,14 +70,20 @@ export default function Home() {
       <div className="container">
         {/* Main Content */}
         <div className="main-content">
-          {error && <p>{error}</p>}
+          {loading && <p>Carregando posts...</p>}
+          {error && <p>Erro ao carregar posts: {error}</p>}
+          {!loading && posts.length === 0 && <p>Nenhum post encontrado.</p>}
           {posts.map((post, index) => (
             <Post
               key={index}
+              id={post.id}
               userAvatar={post.userAvatar}
               userName={post.userName}
               textContent={post.textContent}
               imageContent={post.imageContent}
+              likes={post.likes}
+              token={token}
+              setPosts={setPosts}
             />
           ))}
         </div>

@@ -52,6 +52,15 @@
     margin-right: 20px;
 }
 
+.post-options .fas.fa-thumbs-up {
+    cursor: pointer;
+    transition: color 0.3s ease;
+  }
+  
+  .post-options .fas.fa-thumbs-up.liked {
+    color: #20b45e; /* Cor para o like (exemplo: vermelho) */
+  }
+
 .post-images img{
     width: 90%;
 }
