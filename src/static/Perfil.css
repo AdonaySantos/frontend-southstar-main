@@ -1,0 +1,158 @@
+/* Seção principal do perfil */
+.profile-section {
+    background-color: #121212;
+    color: #ffffff;
+    border-top-left-radius: 30px;
+    border-top-right-radius: 30px;
+    width: 100%; /* Ajuste para preencher toda a largura da área de posts */
+    max-width: none; /* Remova o limite de largura */
+    margin: 0; /* Remova a margem para encostar na borda esquerda */
+    overflow: hidden;
+    position: relative;
+    z-index: 0; /* Menor que o cabeçalho */
+}
+
+/* Cabeçalho do perfil com a imagem de fundo */
+.profile-header {
+    width: 100%;  /* Certifique-se de que ocupa toda a largura do container */
+    height: 150px;  /* Ou o tamanho que preferir para a imagem */
+    position: relative;
+    display: flex;
+    justify-content: center;
+}
+
+.profile-header .background-image {
+    width: 100%;
+    height: 150px;
+    object-fit: cover;
+    border-top-left-radius: 30px;
+    border-top-right-radius: 30px;
+    border: 1px solid #1c1c1c;  /* Adiciona a borda */
+  }
+
+/* Informações do perfil */
+.profile-info {
+    text-align: center;
+    margin-top: -50px;
+    position: relative;
+    z-index: 2;
+}
+
+.profile-picture {
+    width: 100px;
+    height: 100px;
+    border-radius: 50%;
+    border: 3px solid #ffffff;
+}
+
+.profile-name {
+    font-size: 24px;
+    font-weight: bold;
+    margin: 10px 0 5px;
+}
+
+.profile-username {
+    color: #888;
+    font-size: 14px;
+}
+
+/* Botão de verificação */
+.verify-button {
+    background-color: #1da1f2;
+    color: #ffffff;
+    border: none;
+    border-radius: 20px;
+    padding: 5px 15px;
+    cursor: pointer;
+    font-size: 14px;
+    margin-top: 10px;
+}
+
+/* Detalhes do perfil */
+.profile-details {
+    display: flex;
+    justify-content: center;
+    gap: 15px;
+    margin: 15px 0;
+    font-size: 14px;
+}
+
+/* Informações de localização */
+.location-info {
+    font-size: 14px;
+    margin: 10px 0;
+}
+
+.location-info a {
+    color: #1da1f2;
+    text-decoration: none;
+    margin-left: 5px;
+}
+
+.joined-date {
+    font-size: 12px;
+    color: #666;
+    margin-top: 5px;
+}
+
+/* Informações de seguidores */
+.followers-info {
+    display: flex;
+    justify-content: center;
+    gap: 20px;
+    font-size: 14px;
+    margin-top: 10px;
+}
+
+/* Navegação por abas */
+.nav-tabs {
+    display: flex;
+    justify-content: space-around;
+    border-top: 1px solid #333;
+    border-bottom: 1px solid #333;
+    padding: 10px 0px;
+    margin: 10px;
+}
+
+.nav-tabs a {
+    color: #1da1f2;
+    text-decoration: none;
+    font-size: 14px;
+    transition: color 0.3s;
+}
+
+.nav-tabs a:hover {
+    color: #ffffff;
+}
+
+
+.create-post-profile {
+    display: flex;
+    flex-direction:row;
+    justify-content: center;
+    padding: 20px;
+    border-bottom: 1px solid #303030;
+    background-color: #121212;
+    margin-bottom: 20px;
+}
+
+.buttonsubmit-profile {
+    display: flex;
+    justify-content: flex-end; /* Alinha o botão à direita */
+}
+
+.post-submit-button-profile {
+    background-color: #201b2c;
+    color: white;
+    border: none;
+    padding: 0px 30px; /* Reduzido o padding para diminuir o tamanho */
+    border-radius: 30px;
+    cursor: pointer;
+    font-family: "Montserrat", sans-serif;
+    font-size: 14px; /* Diminui o tamanho da fonte */
+    width: auto; /* Permite que o botão se ajuste ao conteúdo */
+}
+
+.post-submit-button-profile:hover {
+    background-color: #20b45e;
+}

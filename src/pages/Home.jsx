@@ -12,10 +12,26 @@ export default function Home() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [token, setToken] = useState(localStorage.getItem("authToken")); // Gerencia o token no estado
+  const [isModalOpen, setIsModalOpen] = useState(false);
   const navigate = useNavigate();
 
   useEffect(() => {
     fetchPosts(setPosts, setLoading);
+
+    const closeModal = (event) => {
+      // Fechar o modal quando o 'X' for clicado ou quando o modal for clicado fora
+      if (event.target === document.getElementById("modal-overlay")) {
+        setIsModalOpen(false);
+      }
+    };
+
+    // Adiciona o evento de clique na janela para fechar o modal
+    window.addEventListener("click", closeModal);
+
+    // Cleanup do evento quando o componente for desmontado
+    return () => {
+      window.removeEventListener("click", closeModal);
+    };
   }, []);
 
   const logout = () => {
@@ -29,6 +45,9 @@ export default function Home() {
     navegateheader: token ? "/perfil" : "/login",
     nome: token ? "Perfil" : "Entrar",
   };
+
+  const handleOpenModal = () => setIsModalOpen(true);
+  const handleCloseModal = () => setIsModalOpen(false);
 
   return (
     <>
@@ -44,38 +63,81 @@ export default function Home() {
           <div className="menu-item">
             <i className="fas fa-home"></i> <span>Home</span>
           </div>
-          <div className="menu-item">
-            <i className="fas fa-search"></i> <span>Explore</span>
-          </div>
           {/* Botão de Logout */}
           {token && (
             <div className="menu-item" onClick={logout}>
               <i className="fas fa-sign-out-alt"></i> <span>Logout</span>
             </div>
           )}
-          <div className="menu-item">
-            <i className="fas fa-envelope"></i> <span>Messages</span>
-          </div>
-          <div className="menu-item">
-            <i className="fas fa-user"></i> <span>Profile</span>
-          </div>
+          {token && (
+            <div className="menu-item">
+              <i className="fas fa-user"></i> <span>Profile</span>
+            </div>
+          )}
           {/* Botão de Post */}
           {token && (
-            <button className="post-button" id="menu-button">
+            <button
+              className="post-button"
+              id="menu-button"
+              onClick={handleOpenModal}
+            >
               Post
             </button>
           )}
         </div>
       </div>
+
       <div className="container">
         {/* Main Content */}
         <div className="main-content">
+          {/* Formulário de criação de post, somente se o usuário estiver logado */}
+          {token && (
+            <div className="create-post">
+              <div className="user-avatar-placeholder"></div>{" "}
+              {/* Avatar estático */}
+              <textarea
+                className="post-input"
+                placeholder="O que está acontecendo?"
+                rows="2"
+              ></textarea>
+              <div className="buttonsubmit">
+                <button className="post-submit-button">Post</button>
+              </div>
+            </div>
+          )}
+
+          {/* Modal */}
+          {isModalOpen && (
+            <div className="modal-overlay">
+              <div className="modal-content">
+                <span
+                  id="closeEditModalBtn"
+                  className="close"
+                  onClick={handleCloseModal}
+                >
+                  &times;
+                </span>
+                <div className="create-post">
+                  <div className="user-avatar-placeholder"></div>
+                  <textarea
+                    className="post-input"
+                    placeholder="O que está acontecendo?"
+                    rows="3"
+                  ></textarea>
+                  <div className="buttonsubmit">
+                    <button className="post-submit-button">Post</button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          )}
+
           {loading && <p>Carregando posts...</p>}
           {error && <p>Erro ao carregar posts: {error}</p>}
           {!loading && posts.length === 0 && <p>Nenhum post encontrado.</p>}
-          {posts.map((post, index) => (
+          {posts.map((post) => (
             <Post
-              key={index}
+              key={post.id}
               id={post.id}
               userAvatar={post.userAvatar}
               userName={post.userName}

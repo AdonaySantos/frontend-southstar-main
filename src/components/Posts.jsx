@@ -17,19 +17,28 @@ export default function Post({
 
   // Função para lidar com a mudança de cor do ícone ao clicar
   const handleLikeClick = () => {
-    // Atualiza o like de forma otimista (imediatamente)
+    setPosts((prevPosts) =>
+      prevPosts.map((post) =>
+        post.id === id
+          ? {
+              ...post,
+              likes: isLiked ? post.likes - 1 : post.likes + 1,
+            }
+          : post
+      )
+    );
+  
     setIsLiked((prevState) => !prevState);
-    
-    // Chama a função para lidar com a lógica de backend
-    toggleLike(id, setPosts, token, isLiked);
+    toggleLike(id, token, isLiked);
   };
+  
 
   return (
     <div className="post">
       <div className="user-info">
         <div className="user-avatar">
           <img
-            src={"https://backend-southstar-main.onrender.com/posts/" + userAvatar}
+            src={"http://localhost:3000/posts/" + userAvatar}
             alt={`${userName}'s avatar`}
           />
         </div>
@@ -39,7 +48,7 @@ export default function Post({
           <div className="post-images">
             {imageContent && (
               <img
-                src={"https://backend-southstar-main.onrender.com/posts/" + imageContent}
+                src={"http://localhost:3000/posts/" + imageContent}
                 alt="Post content"
                 className="post-image"
               />

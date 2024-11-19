@@ -1,31 +1,15 @@
 import axios from "axios";
 
-export async function toggleLike(postId, setPosts, token, isLiked) {
-  if (!token) {
-    alert("Faça login ou crie uma conta para dar likes");
-    return;
-  }
-
-  // A lógica de like otimista foi movida para o componente Post.jsx.
-  // Aqui, apenas fazemos a requisição para o backend.
-
+export async function toggleLike(postId, token) {
   try {
     const response = await axios.post(
-      `https://backend-southstar-main.onrender.com/like/${postId}`,
+      `http://localhost:3000/like/${postId}`,
       {},
-      {
-        headers: { Authorization: `Bearer ${token}` },
-      }
+      { headers: { Authorization: `Bearer ${token}` } }
     );
-
-    // Atualiza os posts com base no resultado do backend
-    setPosts((prevPosts) =>
-      prevPosts.map((post) =>
-        post.id === parseInt(postId) ? { ...post, likes: response.data.likes } : post
-      )
-    );
+    return response.data; // Retorna os dados do backend
   } catch (error) {
-    console.error("Erro ao gerenciar like:", error);
-    alert(error.response?.data?.message || "Erro ao processar sua solicitação");
+    console.error('Erro ao processar like:', error);
+    throw error; // Lança o erro para ser tratado no componente
   }
 }
