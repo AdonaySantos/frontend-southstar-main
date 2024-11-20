@@ -104,14 +104,14 @@ export default function Perfil() {
               <>
                 <div className="profile-header">
                   <img
-                    src={`https://backend-southstar-main.onrender.com/posts/${userData.background}`}
+                    src={`http://localhost:3000/posts/${userData.background}`}
                     alt="Background"
                     className="background-image"
                   />
                 </div>
                 <div className="profile-info">
                   <img
-                    src={`https://backend-southstar-main.onrender.com/posts/${userData.avatar}`}
+                    src={`http://localhost:3000/posts/${userData.avatar}`}
                     alt="Profile Avatar"
                     className="profile-picture"
                   />
@@ -133,10 +133,8 @@ export default function Perfil() {
           {/* Formulário de criação de post, somente se o usuário estiver logado */}
           {token && (
             <div className="create-post-profile">
-              <div className="user-avatar-placeholder"></div>{" "}
-              {/* Avatar estático */}
               <textarea
-                className="post-input"
+                className="post-input-profile"
                 placeholder="O que está acontecendo?"
                 rows="2"
               ></textarea>
@@ -194,29 +192,7 @@ export default function Perfil() {
         </div>
 
         {/* Right Sidebar */}
-        <div className="right-sidebar">
-          <input type="text" placeholder="Search" className="search-bar" />
-          <div className="trending">
-            <h3>What's happening</h3>
-            <div className="trending-item">
-              <p>Music · Trending</p>
-              <p className="font-bold">Liam Payne</p>
-              <p>
-                Trending with <span className="hashtag">#OneDirection</span>
-              </p>
-            </div>
-          </div>
-          <div className="who-to-follow">
-            <h3>Who to follow</h3>
-            <div className="follow-item">
-              <div className="follow-info">
-                <div className="user-avatar"></div>
-                <span>adonay</span>
-              </div>
-              <button className="follow-button">Follow</button>
-            </div>
-          </div>
-        </div>
+        <div className="right-sidebar"></div>
       </div>
     </>
   );

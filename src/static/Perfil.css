@@ -129,8 +129,8 @@
 .create-post-profile {
     display: flex;
     flex-direction:row;
-    justify-content: center;
-    padding: 20px;
+    justify-content: space-around;
+    padding: 10px 0px 20px 0px;
     border-bottom: 1px solid #303030;
     background-color: #121212;
     margin-bottom: 20px;
@@ -151,6 +151,18 @@
     font-family: "Montserrat", sans-serif;
     font-size: 14px; /* Diminui o tamanho da fonte */
     width: auto; /* Permite que o botão se ajuste ao conteúdo */
+}
+
+.post-input-profile{
+    width: 60%;
+    border: none;
+    outline: none;
+    resize: none;
+    background-color: #121212;
+    color: white;
+    font-size: 16px;
+    font-family: "Montserrat", sans-serif;
+    border-radius: 10px;
 }
 
 .post-submit-button-profile:hover {

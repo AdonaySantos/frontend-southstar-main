@@ -39,11 +39,12 @@
     background-color: #201b2c; 
     color: white;
     border: none;
-    padding: 10px 20px;
+    padding: 15px 50px;
     border-radius: 30px;
     cursor: pointer;
     margin-top: 20px;
     font-family: "Montserrat", sans-serif;
+    font-size: 16px;
 }
 
 .post-button:hover {
@@ -111,21 +112,20 @@
     flex-direction: column;
     padding: 20px;
     border-bottom: 1px solid #303030;
-    background-color: #121212;
+    background-color: #1c1c1c;
     margin-bottom: 20px;
 }
 
 .post-input {
-    flex-grow: 1;
     border: none;
     outline: none;
     resize: none;
-    background-color: #121212;
+    background-color: #1c1c1c;
     color: white;
     font-size: 16px;
     font-family: "Montserrat", sans-serif;
-    padding: 10px;
     border-radius: 10px;
+    margin-top: 0; /* Remova qualquer margem superior extra */
 }
 
 .divider-line {
@@ -144,11 +144,11 @@
     background-color: #201b2c;
     color: white;
     border: none;
-    padding: 10px 40px; /* Reduzido o padding para diminuir o tamanho */
+    padding: 10px 30px; /* Reduzido o padding para diminuir o tamanho */
     border-radius: 30px;
     cursor: pointer;
     font-family: "Montserrat", sans-serif;
-    font-size: 18px; /* Diminui o tamanho da fonte */
+    font-size: 14px; /* Diminui o tamanho da fonte */
     width: auto; /* Permite que o botão se ajuste ao conteúdo */
 }
 
@@ -194,9 +194,37 @@
 
 .close {
     position: absolute;
-    top: 5px;
+    top: 10px;
     right: 30px; /* Alinhar na direita */
     font-size: 35px;
     color: #aaa;
     cursor: pointer;
-  }
+}
+
+.user-avatar-and-input {
+    display: flex;
+    align-items: flex-start; /* Alinha o avatar e o textarea no topo */
+}
+
+.user-avatar-placeholder {
+    margin-right: 10px; /* Espaçamento entre o avatar e o textarea */
+}
+
+.user-avatar-placeholder img {
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    background-color: #34495e;
+}
+
+.user-name {
+    font-weight: 550;
+    margin-bottom: 5px; /* Espaçamento entre o nome e o campo de texto */
+    color: white;
+}
+
+.user-information {
+    display: flex;
+    flex-direction: column;
+    flex-grow: 1; /* Faz o textarea ocupar o espaço restante */
+}

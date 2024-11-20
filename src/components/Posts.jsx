@@ -36,7 +36,7 @@ export default function Post({
       <div className="user-info">
         <div className="user-avatar">
           <img
-            src={`https://backend-southstar-main.onrender.com/posts/${userAvatar}`}
+            src={`http://localhost:3000/posts/${userAvatar}`}
             alt={`${userName}'s avatar`}
           />
         </div>
@@ -46,7 +46,7 @@ export default function Post({
           <div className="post-images">
             {imageContent && (
               <img
-                src={`https://backend-southstar-main.onrender.com/posts/${imageContent}`}
+                src={`http://localhost:3000/posts/${imageContent}`}
                 alt="Post content"
                 className="post-image"
               />

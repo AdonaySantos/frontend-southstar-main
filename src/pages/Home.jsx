@@ -12,10 +12,20 @@ export default function Home() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [token, setToken] = useState(localStorage.getItem("authToken")); // Gerencia o token no estado
+  const [user, setUser] = useState(null); // Estado para armazenar informações do usuário
   const [isModalOpen, setIsModalOpen] = useState(false);
   const navigate = useNavigate();
 
+  // Função para buscar informações do usuário logado
   useEffect(() => {
+    if (token) {
+      fetch(`http://localhost:3000/user`, {
+        headers: { Authorization: `Bearer ${token}` },
+      })
+        .then((response) => response.json())
+        .then((data) => setUser(data)) // Armazena as informações do usuário no estado
+        .catch((error) => console.error("Erro ao buscar informações do usuário:", error));
+    }
     fetchPosts(setPosts, setLoading, setError, token);
 
     const closeModal = (event) => {
@@ -32,7 +42,7 @@ export default function Home() {
     return () => {
       window.removeEventListener("click", closeModal);
     };
-  }, []);
+  }, [token]);
 
   const logout = () => {
     handleLogout(navigate); // Executa a função de logout
@@ -91,16 +101,24 @@ export default function Home() {
         {/* Main Content */}
         <div className="main-content">
           {/* Formulário de criação de post, somente se o usuário estiver logado */}
-          {token && (
+          {token && user && (
             <div className="create-post">
-              <div className="user-avatar-placeholder"></div>{" "}
-              {/* Avatar estático */} 
-              {/* https://localhost:3000/posts */}
-              <textarea
-                className="post-input"
-                placeholder="O que está acontecendo?"
-                rows="2"
-              ></textarea>
+              <div className="user-avatar-and-input">
+                <div className="user-avatar-placeholder">
+                  <img
+                    src={`http://localhost:3000/posts/${user.avatar}`} // Usa o avatar do usuário
+                    alt={`${user.name}'s avatar`}
+                  />
+                </div>
+                <div className="user-information">
+                  <span className="user-name">{user.name}</span> {/* Usa o nome do usuário */}
+                  <textarea
+                    className="post-input"
+                    placeholder="O que está acontecendo?"
+                    rows="2"
+                  ></textarea>
+                </div>
+              </div>
               <div className="buttonsubmit">
                 <button className="post-submit-button">Post</button>
               </div>
@@ -118,13 +136,16 @@ export default function Home() {
                 >
                   &times;
                 </span>
-                <div className="create-post">
-                  <div className="user-avatar-placeholder"></div>
-                  <textarea
-                    className="post-input"
-                    placeholder="O que está acontecendo?"
-                    rows="3"
-                  ></textarea>
+                <div className="create-post-modal">
+                  <div className="user-avatar-and-input">
+                    <div className="user-avatar-placeholder">
+                      <img src={`http://localhost:3000/posts/${user.avatar}`} />
+                    </div>
+                    <div className="user-information">
+                      <span className="user-name">{user.name}</span>
+                      <textarea className="post-input" placeholder="O que está acontecendo?" rows="2"></textarea>
+                    </div>
+                  </div>
                   <div className="buttonsubmit">
                     <button className="post-submit-button">Post</button>
                   </div>
@@ -154,29 +175,7 @@ export default function Home() {
         </div>
 
         {/* Right Sidebar */}
-        <div className="right-sidebar">
-          <input type="text" placeholder="Search" className="search-bar" />
-          <div className="trending">
-            <h3>What's happening</h3>
-            <div className="trending-item">
-              <p>Music · Trending</p>
-              <p className="font-bold">Liam Payne</p>
-              <p>
-                Trending with <span className="hashtag">#OneDirection</span>
-              </p>
-            </div>
-          </div>
-          <div className="who-to-follow">
-            <h3>Who to follow</h3>
-            <div className="follow-item">
-              <div className="follow-info">
-                <div className="user-avatar"></div>
-                <span>adonay</span>
-              </div>
-              <button className="follow-button">Follow</button>
-            </div>
-          </div>
-        </div>
+        <div className="right-sidebar"></div>
       </div>
     </>
   );
