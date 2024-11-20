@@ -142,7 +142,7 @@ export default function Home() {
                   />
                 </div>
                 <div className="user-information">
-                  <span className="user-name">{user.name}</span>{" "}
+                  <span className="user-name">{user.name}</span>
                   {/* Usa o nome do usuário */}
                   <textarea
                     className="post-input"
@@ -235,7 +235,6 @@ export default function Home() {
           )}
 
           {loading && <p>Carregando posts...</p>}
-          {error && <p>Erro ao carregar posts: {error}</p>}
           {!loading && posts.length === 0 && <p>Nenhum post encontrado.</p>}
           {posts.map((post) => (
             <Post
@@ -247,6 +246,7 @@ export default function Home() {
               imageContent={post.imageContent}
               likes={post.likes}
               likedByUser={post.likedByUser}
+              comments={post.comments}
               token={token}
               setPosts={setPosts}
               navigate={navigate}

@@ -1,0 +1,73 @@
+.nav-tabs-post {
+    width: 100%;
+    display: flex;
+    justify-content: space-around;
+    border-bottom: 1px solid #333;
+    padding: 10px 0px 15px 0px;
+}
+
+.nav-tabs-post a {
+    color: #1da1f2;
+    text-decoration: none;
+    font-size: 14px;
+    transition: color 0.3s;
+}
+
+.nav-tab-post a:hover {
+    color: #ffffff;
+}
+
+.comment-information {
+    display: flex;
+    flex-direction: row; /* Alinha os itens na horizontal (linha) */
+    align-items: center; /* Alinha os itens verticalmente no centro */
+    gap: 10px; /* Adiciona um espaçamento entre os elementos */
+    width: 100%;
+}
+
+.comment-content{
+    display: flex;
+    flex-direction: column;
+    width: 80%;
+}
+
+.comment-name {
+    font-weight: 550;
+    margin-bottom: 5px; /* Espaçamento entre o nome e o campo de texto */
+    color: white;
+}
+
+.comment-input {
+    border: none;
+    outline: none;
+    resize: none;
+    background-color: #1c1c1c;
+    color: white;
+    font-size: 16px;
+    font-family: "Montserrat", sans-serif;
+    border-radius: 10px;
+    margin-top: 0; /* Remova qualquer margem superior extra */
+    flex-grow: 1; /* Faz o textarea ocupar o espaço restante */
+}
+
+.comment-buttonsubmit {
+    display: flex;
+    justify-content: center; /* Centraliza o botão */
+    align-items: center; /* Alinha o botão verticalmente no centro */
+}
+
+.comment-submit-button {
+    background-color: #201b2c;
+    color: white;
+    border: none;
+    padding: 10px 30px; /* Reduzido o padding para diminuir o tamanho */
+    border-radius: 30px;
+    cursor: pointer;
+    font-family: "Montserrat", sans-serif;
+    font-size: 14px; /* Diminui o tamanho da fonte */
+    width: auto; /* Permite que o botão se ajuste ao conteúdo */
+}
+
+.comment-submit-button:hover {
+    background-color: #20b45e;
+}

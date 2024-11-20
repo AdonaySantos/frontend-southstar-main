@@ -3,15 +3,21 @@ import { useParams, useNavigate } from "react-router-dom";
 import logo from "../assets/favicon.ico";
 import Header from "../components/Header";
 import { toggleLike } from "../functions/toggleLike";
+import { fetchComments } from "../functions/fetchComments"; // Função importada
+import "../static/PostDetails.css";
 
 export default function PostDetails() {
   const { id } = useParams();
   const navigate = useNavigate();
+  const [user, setUser] = useState(null);
   const [post, setPost] = useState(null);
   const [loading, setLoading] = useState(true);
   const [isLiked, setIsLiked] = useState(false);
   const [likeCount, setLikeCount] = useState(0);
+  const [comments, setComments] = useState([]);
+  const [newComment, setNewComment] = useState(""); // Estado para o comentário
   const [token, setToken] = useState(localStorage.getItem("authToken"));
+  const [isSubmitting, setIsSubmitting] = useState(false); // Estado para controle de envio
 
   useEffect(() => {
     fetch(`http://localhost:3000/posts/${id}`, {
@@ -20,23 +26,33 @@ export default function PostDetails() {
       .then((response) => response.json())
       .then((data) => {
         setPost(data);
-        setLikeCount(data.likes); // Definir a contagem de likes do post
-        setIsLiked(data.likedByUser); // Definir se o usuário já deu like
+        setLikeCount(data.likes);
+        setIsLiked(data.likedByUser);
+        setComments(data.comments || []);
         setLoading(false);
       })
       .catch((error) => console.error("Erro ao buscar post:", error));
   }, [id, token]);
 
+  useEffect(() => {
+    if (token) {
+      fetch(`http://localhost:3000/user`, {
+        headers: { Authorization: `Bearer ${token}` },
+      })
+        .then((response) => response.json())
+        .then((data) => setUser(data)) // Armazena as informações do usuário no estado
+        .catch((error) =>
+          console.error("Erro ao buscar informações do usuário:", error)
+        );
+    }
+    console.log(user);
+  }, [token]);
+
   const handleLikeClick = () => {
     if (!post) return;
 
-    // Atualiza a contagem de likes localmente
     setLikeCount((prevCount) => (isLiked ? prevCount - 1 : prevCount + 1));
-
-    // Alterna o estado do botão de "like"
     setIsLiked((prevState) => !prevState);
-
-    // Chama a função que sincroniza o estado com o backend
     toggleLike(id, token, !isLiked);
   };
 
@@ -46,9 +62,38 @@ export default function PostDetails() {
     navigate("/login");
   };
 
+  const handleCommentSubmit = () => {
+    if (newComment.trim()) {
+      setIsSubmitting(true); // Inicia o envio do comentário
+      fetchComments(id, token, newComment, setComments)
+        .then(() => {
+          setNewComment(""); // Limpa o campo de comentário após o envio
+          setIsSubmitting(false); // Finaliza o envio
+
+          // Recarregar os comentários após o envio
+          fetch(`http://localhost:3000/posts/${id}`, {
+            headers: { Authorization: `Bearer ${token}` },
+          })
+            .then((response) => response.json())
+            .then((data) => {
+              setComments(data.comments || []);
+            })
+            .catch((error) =>
+              console.error("Erro ao buscar os comentários:", error)
+            );
+        })
+        .catch((error) => {
+          setIsSubmitting(false); // Finaliza o envio, mesmo em caso de erro
+          alert("Erro ao enviar comentário: " + error.message);
+        });
+    } else {
+      alert("O comentário não pode estar vazio.");
+    }
+  };
+
   const headerProps = {
     logo: logo,
-    pag: "Página Inicial",
+    pag: "Post",
     navegateheader: token ? "/perfil" : "/login",
     nome: token ? "Perfil" : "Entrar",
   };
@@ -111,35 +156,84 @@ export default function PostDetails() {
                 className={`fas fa-thumbs-up ${isLiked ? "liked" : ""}`}
                 onClick={handleLikeClick}
               >
-                {likeCount} {/* Exibe a contagem de likes atualizada */}
+                {likeCount}
               </i>
             </div>
           </div>
-        </div>
 
-        <div className="right-sidebar">
-          <input type="text" placeholder="Search" className="search-bar" />
-          <div className="trending">
-            <h3>What's happening</h3>
-            <div className="trending-item">
-              <p>Music · Trending</p>
-              <p className="font-bold">Liam Payne</p>
-              <p>
-                Trending with <span className="hashtag">#OneDirection</span>
-              </p>
-            </div>
-          </div>
-          <div className="who-to-follow">
-            <h3>Who to follow</h3>
-            <div className="follow-item">
-              <div className="follow-info">
-                <div className="user-avatar"></div>
-                <span>adonay</span>
+          <nav className="nav-tabs-post">
+            <a href="">Comentários</a>
+          </nav>
+
+          {/* Formulário para criação de comentário */}
+          {token && user && (
+            <div className="create-post">
+              <div className="user-avatar-and-input">
+                <div className="user-avatar-placeholder">
+                  <img
+                    src={`http://localhost:3000/posts/${user.avatar}`} // Usa o avatar do usuário
+                    alt={`${user.name}'s avatar`}
+                  />
+                </div>
+                <div className="comment-information">
+                  <div className="comment-content">
+                    <span className="comment-name">{user.name}</span>
+                    <textarea
+                      className="comment-input"
+                      placeholder="O que você acha?"
+                      rows="2"
+                      value={newComment}
+                      onChange={(e) => setNewComment(e.target.value)} // Atualiza o estado com o texto do comentário
+                    ></textarea>
+                  </div>
+                  <div className="comment-buttonsubmit">
+                    <button
+                      className="comment-submit-button"
+                      onClick={handleCommentSubmit}
+                      disabled={isSubmitting} // Desabilita o botão durante o envio
+                    >
+                      {isSubmitting ? "Enviando..." : "Comentar"}
+                    </button>
+                  </div>
+                </div>
               </div>
-              <button className="follow-button">Follow</button>
             </div>
+          )}
+
+          {/* Renderizar comentários */}
+          <div className="comments">
+            {comments.length === 0 ? (
+              <p>Sem comentários ainda.</p>
+            ) : (
+              comments.map((comment) => (
+                <div key={comment.id} className="post">
+                  <div className="user-info">
+                    <div className="user-avatar">
+                      <img
+                        src={`http://localhost:3000/posts/${comment.userAvatar}`}
+                        alt={`${comment.userName}'s avatar`}
+                      />
+                    </div>
+                    <div className="post-content">
+                      <span className="user-name">{comment.userName}</span>
+                      <p>{comment.textContent}</p>
+                      <div className="post-images">
+                        {comment.imageContent && (
+                          <img
+                            src={`http://localhost:3000/posts/${comment.imageContent}`}
+                            alt="Comment content"
+                            className="post-image"
+                          />
+                        )}
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              ))
+            )}
           </div>
         </div>
+        <div className="right-sidebar"></div>
       </div>
     </>
   );

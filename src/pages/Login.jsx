@@ -88,7 +88,7 @@ export default function Login() {
                     Não tem uma conta? <a href="/cadastro">Registrar</a>
                   </p>
                 </div>
-                {message && <p>{message}</p>}
+                {message && <p className="message-login">{message}</p>}
               </div>
             </div>
           </form>

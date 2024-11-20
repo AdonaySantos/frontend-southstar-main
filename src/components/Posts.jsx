@@ -10,11 +10,12 @@ export default function Post({
   imageContent,
   likes,
   likedByUser, // Novo campo vindo do backend
-  setPosts,
+  comments,
   token,
   navigate,
 }) {
   console.log(likedByUser)
+  const commentsLength = comments ? comments.length : 0
   const [isLiked, setIsLiked] = useState(likedByUser); // Inicializar com o valor do backend
   const [likeCount, setLikeCount] = useState(likes); // Inicializar a contagem de likes do backend
 
@@ -62,7 +63,9 @@ export default function Post({
         >
           {likeCount} {/* Exibe a contagem de likes atualizada */}
         </i>
-        <i className="fas fa-comment"></i> {/* Ícone para comentários */}
+        <i className="fas fa-comment">
+            {commentsLength}
+        </i> {/* Ícone para comentários */}
       </div>
     </div>
   );

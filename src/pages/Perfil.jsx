@@ -7,6 +7,8 @@ import { handleLogout } from "../functions/handleLogout.jsx";
 import "../static/Perfil.css";
 import { fetchUserData } from "../functions/fetchUserData.jsx";
 import { fetchUserPosts } from "../functions/fetchUserPosts.jsx";
+import { FaPaperclip } from "react-icons/fa";
+import { handlePost } from "../functions/handlePost.jsx";
 
 export default function Perfil() {
   const [posts, setPosts] = useState([]);
@@ -15,6 +17,9 @@ export default function Perfil() {
   const [error, setError] = useState(null);
   const [token, setToken] = useState(localStorage.getItem("authToken")); // Gerencia o token no estado
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [postContent, setPostContent] = useState("");
+  const [image, setImage] = useState(null);
+  const [fileName, setFileName] = useState("");
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -61,6 +66,29 @@ export default function Perfil() {
 
   const handleOpenModal = () => setIsModalOpen(true);
   const handleCloseModal = () => setIsModalOpen(false);
+
+  const handleFileChange = (e) => {
+    const file = e.target.files[0];
+    if (file) {
+      setImage(file);
+      setFileName(file.name); // Armazena o nome do arquivo
+    }
+  };
+
+  const handleIconClick = () => {
+    document.getElementById("fileInput").click(); // Dispara o clique no input escondido
+  };
+
+  const handlePostSubmit = () => {
+    if (postContent.trim()) {
+      handlePost(postContent, image, token, setError, setPosts);
+      setPostContent(""); // Limpa o campo de texto após o envio
+      setImage(null); // Limpa a imagem após o envio
+      handleCloseModal(); // Fecha o modal
+    } else {
+      setError("O post deve ter conteúdo.");
+    }
+  };
 
   return (
     <>
@@ -137,9 +165,26 @@ export default function Perfil() {
                 className="post-input-profile"
                 placeholder="O que está acontecendo?"
                 rows="2"
+                value={postContent}
+                onChange={(e) => setPostContent(e.target.value)}
               ></textarea>
+              <div>
+                    <input
+                      id="fileInput"
+                      type="file"
+                      accept="image/*"
+                      onChange={handleFileChange}
+                      style={{ display: "none" }} // Esconde o input
+                    />
+                    <FaPaperclip
+                      className="file-upload-icon"
+                      onClick={handleIconClick} // Chama a função ao clicar no ícone
+                    />
+                    {/* Exibe o nome do arquivo, se houver */}
+                    {fileName && <span className="file-name">{fileName}</span>}
+                  </div>
               <div className="buttonsubmit-profile">
-                <button className="post-submit-button-profile">Post</button>
+                <button className="post-submit-button-profile" onClick={handlePostSubmit}>Post</button>
               </div>
             </div>
           )}
@@ -184,6 +229,7 @@ export default function Perfil() {
               imageContent={post.imageContent}
               likes={post.likes}
               likedByUser={post.likedByUser}
+              comments={post.comments}
               token={token}
               setPosts={setPosts}
               navigate={navigate}

@@ -3,23 +3,26 @@ import "../static/Cadastro.css";
 import axios from "axios";
 import logo from '../assets/sroxo.ico'
 import Header from "../components/Header";
+import { useNavigate } from "react-router-dom";
 
 export default function Cadastro() {
   const [name, setName] = useState("");
   const [password, setPassword] = useState("");
   const [message, setMessage] = useState("");
+  const navigate = useNavigate();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
       const response = await axios.post(
-        "https://backend-southstar-main.onrender.com/register", // Verifique se essa URL está correta
+        "http://localhost:3000/register", // Verifique se essa URL está correta
         {
           name,
           password,
         }
       );
       setMessage(response.data.message); // Mensagem de sucesso
+      navigate("/login")
     } catch (error) {
       // Verifique se error.response existe antes de acessar data.message
       setMessage("Erro ao cadastrar: " + (error.response?.data?.message || error.message));
@@ -72,7 +75,7 @@ export default function Cadastro() {
               <button className="button-cadastro" type="submit">
                 Cadastrar
               </button>
-              {message && <p className="message">{message}</p>}
+              {message && <p className="message-login">{message}</p>}
               <div className="login-link">
                 <p>
                   Já tem uma conta? <a href="/login">Faça login</a>

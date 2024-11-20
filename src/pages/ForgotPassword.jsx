@@ -13,12 +13,12 @@ export default function ForgotPassword() {
     event.preventDefault();
     try {
       const response = await axios.post(
-        "https://backend-southstar.onrender.com",
+        "http://localhost:3000/recover-password",
         {
           name,
         }
       );
-      setMessage(`Senha: ${response.data.password}`);
+      setMessage(`${response.data.message}`);
     } catch (error) {
       setMessage(
         "Erro ao recuperar senha: " +
@@ -56,7 +56,7 @@ export default function ForgotPassword() {
                   />
                 </div>
                 <button type="submit" className="button-recovery">Recuperar</button>
-                {message && <p className="message">{message}</p>}
+                {message && <p className="message-login">{message}</p>}
                 <div className="cadastrar-link">
                   <p>
                     Não tem uma conta? <a href="/cadastro">Registrar</a>

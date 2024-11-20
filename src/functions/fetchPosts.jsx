@@ -18,6 +18,7 @@ export const fetchPosts = async (setPosts, setLoading, setError, token) => {
       imageContent: post.imageContent,
       likes: post.likes,
       likedByUser: post.likedByUser, // Incluído o campo do backend
+      comments: post.comments
     }));
 
     setPosts(processedData); // Define os posts no estado
