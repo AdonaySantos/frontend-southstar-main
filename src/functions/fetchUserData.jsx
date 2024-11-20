@@ -4,7 +4,7 @@ export async function fetchUserData(token, setUserData, setError) {
   if (!token) {
     setError("Usuário não autenticado");
     return;
-  }
+  } 
 
   try {
     const response = await axios.get("http://localhost:3000/user", {

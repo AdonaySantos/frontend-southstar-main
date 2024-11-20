@@ -6,6 +6,8 @@ import logo from "../assets/favicon.ico";
 import { fetchPosts } from "../functions/fetchPosts.jsx";
 import { useNavigate } from "react-router-dom";
 import { handleLogout } from "../functions/handleLogout.jsx";
+import { handlePost } from "../functions/handlePost.jsx";
+import { FaPaperclip } from "react-icons/fa";
 
 export default function Home() {
   const [posts, setPosts] = useState([]);
@@ -14,6 +16,9 @@ export default function Home() {
   const [token, setToken] = useState(localStorage.getItem("authToken")); // Gerencia o token no estado
   const [user, setUser] = useState(null); // Estado para armazenar informações do usuário
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [postContent, setPostContent] = useState(""); // Estado para armazenar o texto do post
+  const [image, setImage] = useState(null); // Estado para armazenar a imagem
+  const [fileName, setFileName] = useState("");
   const navigate = useNavigate();
 
   // Função para buscar informações do usuário logado
@@ -24,8 +29,11 @@ export default function Home() {
       })
         .then((response) => response.json())
         .then((data) => setUser(data)) // Armazena as informações do usuário no estado
-        .catch((error) => console.error("Erro ao buscar informações do usuário:", error));
+        .catch((error) =>
+          console.error("Erro ao buscar informações do usuário:", error)
+        );
     }
+    console.log(user);
     fetchPosts(setPosts, setLoading, setError, token);
 
     const closeModal = (event) => {
@@ -58,6 +66,29 @@ export default function Home() {
 
   const handleOpenModal = () => setIsModalOpen(true);
   const handleCloseModal = () => setIsModalOpen(false);
+
+  const handleFileChange = (e) => {
+    const file = e.target.files[0];
+    if (file) {
+      setImage(file);
+      setFileName(file.name); // Armazena o nome do arquivo
+    }
+  };
+
+  const handleIconClick = () => {
+    document.getElementById("fileInput").click(); // Dispara o clique no input escondido
+  };
+
+  const handlePostSubmit = () => {
+    if (postContent.trim()) {
+      handlePost(postContent, image, token, setError, setPosts);
+      setPostContent(""); // Limpa o campo de texto após o envio
+      setImage(null); // Limpa a imagem após o envio
+      handleCloseModal(); // Fecha o modal
+    } else {
+      setError("O post deve ter conteúdo.");
+    }
+  };
 
   return (
     <>
@@ -111,16 +142,39 @@ export default function Home() {
                   />
                 </div>
                 <div className="user-information">
-                  <span className="user-name">{user.name}</span> {/* Usa o nome do usuário */}
+                  <span className="user-name">{user.name}</span>{" "}
+                  {/* Usa o nome do usuário */}
                   <textarea
                     className="post-input"
                     placeholder="O que está acontecendo?"
                     rows="2"
+                    value={postContent}
+                    onChange={(e) => setPostContent(e.target.value)}
                   ></textarea>
+                  <div>
+                    <input
+                      id="fileInput"
+                      type="file"
+                      accept="image/*"
+                      onChange={handleFileChange}
+                      style={{ display: "none" }} // Esconde o input
+                    />
+                    <FaPaperclip
+                      className="file-upload-icon"
+                      onClick={handleIconClick} // Chama a função ao clicar no ícone
+                    />
+                    {/* Exibe o nome do arquivo, se houver */}
+                    {fileName && <span className="file-name">{fileName}</span>}
+                  </div>
                 </div>
               </div>
               <div className="buttonsubmit">
-                <button className="post-submit-button">Post</button>
+                <button
+                  className="post-submit-button"
+                  onClick={handlePostSubmit}
+                >
+                  Post
+                </button>
               </div>
             </div>
           )}
@@ -143,11 +197,37 @@ export default function Home() {
                     </div>
                     <div className="user-information">
                       <span className="user-name">{user.name}</span>
-                      <textarea className="post-input" placeholder="O que está acontecendo?" rows="2"></textarea>
+                      <textarea
+                        className="post-input"
+                        placeholder="O que está acontecendo?"
+                        rows="2"
+                      ></textarea>
+                      <div>
+                        <input
+                          id="fileInput"
+                          type="file"
+                          accept="image/*"
+                          onChange={handleFileChange}
+                          style={{ display: "none" }} // Esconde o input
+                        />
+                        <FaPaperclip
+                          className="file-upload-icon"
+                          onClick={handleIconClick} // Chama a função ao clicar no ícone
+                        />
+                        {/* Exibe o nome do arquivo, se houver */}
+                        {fileName && (
+                          <span className="file-name">{fileName}</span>
+                        )}
+                      </div>
                     </div>
                   </div>
                   <div className="buttonsubmit">
-                    <button className="post-submit-button">Post</button>
+                    <button
+                      className="post-submit-button"
+                      onClick={handlePostSubmit}
+                    >
+                      Post
+                    </button>
                   </div>
                 </div>
               </div>

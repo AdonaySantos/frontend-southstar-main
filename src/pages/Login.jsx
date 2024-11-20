@@ -52,11 +52,11 @@ export default function Login() {
             <h1>Faça login :) <br></br> E entre para o nosso time!</h1>
           </div>
           <form onSubmit={handleSubmit}>
-            <div class="right-login">
-              <div class="card-login">
+            <div className="right-login">
+              <div className="card-login">
                 <h1>Login</h1>
                 <div className="textfield">
-                  <label for="usuario">Usuário</label>
+                  <label htmlFor="usuario">Usuário</label>
                   <input
                     type="text"
                     name="usuario"
@@ -66,7 +66,7 @@ export default function Login() {
                   />
                 </div>
                 <div className="textfield">
-                  <label for="senha">Senha</label>
+                  <label htmlFor="senha">Senha</label>
                   <input
                     type="password"
                     name="senha"
@@ -82,7 +82,7 @@ export default function Login() {
                   </label>
                   <a href="/forgot-password">Esqueceu a senha?</a>
                 </div>
-                <button class="button-login">Entrar</button>
+                <button htmlFor="button-login" className="button-login">Entrar</button>
                 <div className="cadastrar-link">
                   <p>
                     Não tem uma conta? <a href="/cadastro">Registrar</a>
