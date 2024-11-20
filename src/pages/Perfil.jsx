@@ -2,29 +2,42 @@ import Post from "../components/Posts.jsx";
 import { useState, useEffect } from "react";
 import Header from "../components/Header.jsx";
 import logo from "../assets/favicon.ico";
-import { fetchPosts } from "../functions/fetchPosts.jsx";
 import { useNavigate } from "react-router-dom";
 import { handleLogout } from "../functions/handleLogout.jsx";
 import "../static/Perfil.css";
+import { fetchUserData } from "../functions/fetchUserData.jsx";
+import { fetchUserPosts } from "../functions/fetchUserPosts.jsx";
 
 export default function Perfil() {
   const [posts, setPosts] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [userData, setUserData] = useState(null); // Estado para armazenar os dados do usuário
   const [error, setError] = useState(null);
   const [token, setToken] = useState(localStorage.getItem("authToken")); // Gerencia o token no estado
   const [isModalOpen, setIsModalOpen] = useState(false);
   const navigate = useNavigate();
 
   useEffect(() => {
-    fetchPosts(setPosts, setLoading);
+    if (token) {
+      fetchUserData(token, setUserData, setError);
+    }
+  }, [token]);
 
-    const closeModal = (event) => {
-      // Fechar o modal quando o 'X' for clicado ou quando o modal for clicado fora
-      if (event.target === document.getElementById("modal-overlay")) {
-        setIsModalOpen(false);
-      }
-    };
+  // Fetch de posts do usuário após os dados estarem disponíveis
+  useEffect(() => {
+    if (userData?.name) {
+      fetchUserPosts(setPosts, setLoading, setError, userData.name, token);
+    }
+  }, [userData]);
 
+  const closeModal = (event) => {
+    // Fechar o modal quando o 'X' for clicado ou quando o modal for clicado fora
+    if (event.target === document.getElementById("modal-overlay")) {
+      setIsModalOpen(false);
+    }
+  };
+
+  useEffect(() => {
     // Adiciona o evento de clique na janela para fechar o modal
     window.addEventListener("click", closeModal);
 
@@ -41,6 +54,7 @@ export default function Perfil() {
 
   const headerProps = {
     logo: logo,
+    pag: "Perfil",
     navegateheader: "/home",
     nome: "Home",
   };
@@ -85,45 +99,35 @@ export default function Perfil() {
         <div className="main-content">
           {/* Seção de Perfil */}
           <div className="profile-section">
-            <div className="profile-header">
-              <img
-                src="background-cat-image.jpg"
-                alt="Background Image"
-                className="background-image"
-              />
-            </div>
-            <div className="profile-info">
-              <img
-                src="profile-picture.jpg"
-                alt="Profile Picture"
-                className="profile-picture"
-              />
-              <h1 className="profile-name">Edy</h1>
-              <p className="profile-username">@CodinomeEdy</p>
-              <div className="profile-details">
-                <p>⚡ 18y</p>
-                <p>♎ Libra</p>
-                <p>🎮 Coisas Geek</p>
-              </div>
-              <div className="location-info">
-                <span>📍 São Paulo, Brasil</span>
-                <a
-                  href="https://instagram.com/edy.silvx"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                >
-                  Instagram
-                </a>
-              </div>
-              <p className="joined-date">Ingressou em setembro de 2020</p>
-              <div className="followers-info">
-                <span>47 Seguindo</span>
-                <span>4 Seguidores</span>
-              </div>
-              <nav className="nav-tabs">
-                <a href="#">Posts</a>
-              </nav>
-            </div>
+            {error && <p>{error}</p>}
+            {userData ? (
+              <>
+                <div className="profile-header">
+                  <img
+                    src={`https://backend-southstar-main.onrender.com/posts/${userData.background}`}
+                    alt="Background"
+                    className="background-image"
+                  />
+                </div>
+                <div className="profile-info">
+                  <img
+                    src={`https://backend-southstar-main.onrender.com/posts/${userData.avatar}`}
+                    alt="Profile Avatar"
+                    className="profile-picture"
+                  />
+                  <h1 className="profile-name">{userData.name}</h1>
+                  <p className="profile-username">@{userData.name}</p>
+                  <div className="description">
+                    <span>{userData.description}</span>
+                  </div>
+                  <nav className="nav-tabs">
+                    <a href="#">Posts</a>
+                  </nav>
+                </div>
+              </>
+            ) : (
+              <p>Carregando informações do usuário...</p>
+            )}
           </div>
 
           {/* Formulário de criação de post, somente se o usuário estiver logado */}
@@ -181,8 +185,10 @@ export default function Perfil() {
               textContent={post.textContent}
               imageContent={post.imageContent}
               likes={post.likes}
+              likedByUser={post.likedByUser}
               token={token}
               setPosts={setPosts}
+              navigate={navigate}
             />
           ))}
         </div>

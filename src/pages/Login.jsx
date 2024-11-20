@@ -15,7 +15,7 @@ export default function Login() {
     event.preventDefault();
     try {
       const response = await axios.post(
-        "https://backend-southstar-main.onrender.com/login",
+        "http://localhost:3000/login",
         {
           name,
           password,
@@ -35,6 +35,7 @@ export default function Login() {
       );
     }
   };
+
   const headerProps = {
     logo: logo,
     pag: "",

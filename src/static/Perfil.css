@@ -78,12 +78,12 @@
 }
 
 /* Informações de localização */
-.location-info {
+.description {
     font-size: 14px;
     margin: 10px 0;
 }
 
-.location-info a {
+.description a {
     color: #1da1f2;
     text-decoration: none;
     margin-left: 5px;

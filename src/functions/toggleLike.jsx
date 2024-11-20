@@ -4,7 +4,7 @@ export async function toggleLike(postId, token) {
   try {
     const response = await axios.post(
       `http://localhost:3000/like/${postId}`,
-      {},
+      {}, // sim é vazio n mexe nessa merda !!
       { headers: { Authorization: `Bearer ${token}` } }
     );
     return response.data; // Retorna os dados do backend

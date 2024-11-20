@@ -7,6 +7,7 @@ import Cadastro from './pages/Cadastro'
 import Home from './pages/Home';
 import './App.css';
 import Perfil from "./pages/Perfil";
+import PostDetails from "./pages/PostDetails";
 
 // Criação do roteador com as rotas definidas
 const router = createBrowserRouter([
@@ -38,6 +39,10 @@ const router = createBrowserRouter([
       {
         path: "/perfil",
         element: <Perfil />
+      },
+      {
+        path: "/post/:id",
+        element: <PostDetails />
       }
     ]
   }

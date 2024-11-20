@@ -16,7 +16,7 @@ export default function Home() {
   const navigate = useNavigate();
 
   useEffect(() => {
-    fetchPosts(setPosts, setLoading);
+    fetchPosts(setPosts, setLoading, setError, token);
 
     const closeModal = (event) => {
       // Fechar o modal quando o 'X' for clicado ou quando o modal for clicado fora
@@ -60,7 +60,7 @@ export default function Home() {
       {/* Sidebar */}
       <div className="sidebar">
         <div className="menu">
-          <div className="menu-item">
+          <div className="menu-item" onClick={() => navigate("/")}>
             <i className="fas fa-home"></i> <span>Home</span>
           </div>
           {/* Botão de Logout */}
@@ -70,7 +70,7 @@ export default function Home() {
             </div>
           )}
           {token && (
-            <div className="menu-item">
+            <div className="menu-item" onClick={() => navigate("/perfil")}>
               <i className="fas fa-user"></i> <span>Profile</span>
             </div>
           )}
@@ -94,7 +94,8 @@ export default function Home() {
           {token && (
             <div className="create-post">
               <div className="user-avatar-placeholder"></div>{" "}
-              {/* Avatar estático */}
+              {/* Avatar estático */} 
+              {/* https://localhost:3000/posts */}
               <textarea
                 className="post-input"
                 placeholder="O que está acontecendo?"
@@ -144,8 +145,10 @@ export default function Home() {
               textContent={post.textContent}
               imageContent={post.imageContent}
               likes={post.likes}
+              likedByUser={post.likedByUser}
               token={token}
               setPosts={setPosts}
+              navigate={navigate}
             />
           ))}
         </div>
